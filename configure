@@ -235,7 +235,14 @@ if test "$gcc" -eq 1 && ($cc -c $test.c) >> configure.log 2>&1; then
   *BSD | *bsd* | DragonFly)
         LDSHARED=${LDSHARED-"$cc -shared -Wl,-soname,libz.so.1,--version-script,${SRCDIR}zlib.map"}
         LDCONFIG="ldconfig -m" ;;
-  CYGWIN* | Cygwin* | cygwin* | *-cygwin* | OS/2*)
+  CYGWIN* | Cygwin* | cygwin* | *-cygwin*)
+        EXE='.exe' ;;
+  OS/2*)
+        shared_ext='.dll'
+        SHAREDLIB=z$shared_ext
+        SHAREDLIBV=z$VER1$shared_ext
+        SHAREDLIBM=z$VER1$shared_ext
+        LDSHARED=${LDSHARED-"$cc -Zdll"}
         EXE='.exe' ;;
   MINGW* | mingw* | *-mingw*)
         rm -f $test.[co] $test $test$shared_ext
@@ -897,6 +904,10 @@ sed < ${SRCDIR}Makefile.in "
 /^PIC_OBJC *=/s#=.*#= $PIC_OBJC#
 /^all: */s#:.*#: $ALL#
 /^test: */s#:.*#: $TEST#
+" | sed -e "
+s/\@VERSION\@/$VER/g;
+" | sed -e "
+s/\@VER1\@/$VER1/g;
 " > Makefile
 
 # create zlib.pc with the configure results
