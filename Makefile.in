@@ -291,7 +291,7 @@ $(DEF_FILE): $(OBJS)
 
 placebo $(SHAREDLIBV): $(PIC_OBJS) libz.a $(DEF_FILE)
 	$(LDSHARED) $(SFLAGS) -o $@ $(PIC_OBJS) $(DEF_FILE) $(LDSHAREDLIBC) $(LDFLAGS)
- 	-@rmdir objs
+	-@rmdir objs
 
 example$(EXE): example.o $(STATICLIB)
 	$(CC) $(CFLAGS) -o $@ example.o $(TEST_LDFLAGS)
